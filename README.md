@@ -1,6 +1,18 @@
 # Spear
 Reference API project using Javalin and Docker
 
+# Development Setup
+This project was developed using these tools and technologies
+- Windows 11
+- IntelliJ Idea 2023.3
+- JDK 17.0.8 (Amazon Corretto)
+- Maven 3.9.5
+- Docker Desktop 4.26.0
+
+# Build Command
+
+```mvn clean package```
+
 # Docker Commands
 Build and tag the resulting image
 
