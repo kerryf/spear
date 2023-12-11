@@ -10,6 +10,7 @@ This project was developed using these tools and technologies
 - Docker Desktop 4.26.0
 
 # Build Command
+Build an executable Jar with manifest and create a directory containing all dependencies
 
 ```mvn clean package```
 
