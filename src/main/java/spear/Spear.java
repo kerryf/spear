@@ -6,12 +6,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * Entry point to the {@code Spear} application.
+ */
 public final class Spear
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Spear.class);
 
     private Spear() { /* Hidden */ }
 
+    /**
+     * Starts the application.
+     *
+     * @param args command line arguments (not currently used)
+     */
     public static void main(String[] args)
     {
         try
