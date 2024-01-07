@@ -1,4 +1,4 @@
-FROM amazoncorretto:17.0.8-alpine3.18
+FROM azul/zulu-openjdk:21.0.1
 
 # Create a working directory for our application
 WORKDIR /opt/spear
