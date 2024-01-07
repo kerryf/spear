@@ -3,11 +3,11 @@ Reference API project using [Javalin](https://javalin.io/) and [Docker](https://
 
 # Development Setup
 This project was developed using these tools and technologies
-- Windows 11 with WSL 2
-- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2023.3
-- JDK 17.0.8 (Amazon Corretto)
+- Fedora 39
+- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2023.3.2
+- JDK 21.0.1 (Azul Zulu)
 - [Maven](https://maven.apache.org/) 3.9.5
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) 4.26.0
+- Docker 24.0.7
 
 # Build Command
 Build an executable Jar with manifest and create a directory containing all dependencies
