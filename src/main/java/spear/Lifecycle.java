@@ -40,7 +40,10 @@ final class Lifecycle
 
         LOGGER.info("Starting setup tasks...");
 
+        Container container = Container.getInstance();
+
         Properties config = loadConfig();
+        container.put("spear.config", config);
         LOGGER.info("Loaded configuration");
 
         setLocale(config);
@@ -50,11 +53,8 @@ final class Lifecycle
         LOGGER.info("Set time zone to {}", TimeZone.getDefault().getDisplayName());
 
         ResourceBundle bundle = ResourceBundle.getBundle("lang/Messages");
-        LOGGER.info("Loaded message bundle");
-
-        Container container = Container.getInstance();
-        container.put("spear.config", config);
         container.put("spear.bundle", bundle);
+        LOGGER.info("Loaded message bundle");
 
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);
@@ -77,7 +77,7 @@ final class Lifecycle
         String language = config.getProperty("language");
         String country = config.getProperty("country");
 
-        Locale locale = new Locale(language, country);
+        Locale locale = Locale.of(language, country);
         Locale.setDefault(locale);
     }
 
