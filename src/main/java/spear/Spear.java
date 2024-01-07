@@ -28,7 +28,7 @@ public final class Spear
                 // Add your config
             });
 
-            Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
+            Runtime.getRuntime().addShutdownHook(Thread.ofVirtual().unstarted(app::stop));
 
             app.events(listener -> {
                 listener.serverStopped(Lifecycle::stop);
