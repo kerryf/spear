@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  javalin:
+    restart: always
+    container_name: javalin_spear
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+  nginx:
+    restart: always
+    image: nginx:latest
+    container_name: nginx_spear
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - javalin
