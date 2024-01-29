@@ -1,5 +1,11 @@
 package spear;
 
+import com.auth0.jwt.algorithms.Algorithm;
+import com.zaxxer.hikari.HikariDataSource;
+import spear.security.Pbkdf2PasswordEncoder;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -9,7 +15,8 @@ import java.util.ResourceBundle;
  */
 public final class App
 {
-    private App() { /* Hidden */ }
+    private App()
+    { /* Hidden */ }
 
     /**
      * Returns an environment variable value.
@@ -117,5 +124,41 @@ public final class App
     {
         String pattern = getResourceBundle().getString(key);
         return MessageFormat.format(pattern, args);
+    }
+
+    /**
+     * Returns the password encoder from the {@code Container}.
+     *
+     * @return the shared {@code Pbkdf2PasswordEncoder} instance
+     */
+    public static Pbkdf2PasswordEncoder getEncoder()
+    {
+        return (Pbkdf2PasswordEncoder) Container.getInstance().get("spear.encoder");
+    }
+
+    public static Algorithm getAlgorithm()
+    {
+        return (Algorithm) Container.getInstance().get("spear.algorithm");
+    }
+
+    /**
+     * Returns the database connection pool from the {@code Container}.
+     *
+     * @return the {@code HikariDataSource} representing the connection pool
+     */
+    public static HikariDataSource getDataSource()
+    {
+        return (HikariDataSource) Container.getInstance().get("spear.source");
+    }
+
+    /**
+     * Returns a database {@code Connection} from the pool.
+     *
+     * @return an open {@code Connection}
+     * @throws SQLException if an error occurs retrieving a connection
+     */
+    public static Connection getConnection() throws SQLException
+    {
+        return getDataSource().getConnection();
     }
 }
