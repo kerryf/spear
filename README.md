@@ -1,3 +1,6 @@
+# Notice
+This project is currently under construction
+
 # Spear
 Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs.nginx.com/), and [Docker](https://docs.docker.com/)
 
@@ -28,7 +31,7 @@ Stop the application
 ```docker compose down```
 
 # SSL Commands
-Generate a self-signed certificate for development purposes or use the provided one
+Generate a self-signed certificate for development purposes
 
 ```openssl req -newkey rsa:2048 -nodes -keyout spear.key -out spear.csr```
 
