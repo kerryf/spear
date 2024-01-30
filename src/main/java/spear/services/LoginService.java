@@ -41,16 +41,17 @@ public final class LoginService
             return Optional.empty();
         }
 
-        return Optional.of(generateToken());
+        return Optional.of(generateToken(username));
     }
 
-    private static String generateToken()
+    private static String generateToken(String username)
     {
         Instant now = Instant.now();
         Instant expiresAt = now.plus(App.cfgInt("jwt.lifespan"), ChronoUnit.MINUTES);
 
         return JWT.create()
                 .withIssuer(App.cfgStr("jwt.issuer"))
+                .withSubject(username)
                 .withExpiresAt(expiresAt)
                 .sign(App.getAlgorithm());
     }
