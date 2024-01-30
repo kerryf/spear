@@ -14,7 +14,7 @@ public final class LoginController
     private LoginController()
     { /* Hidden */ }
 
-    public static Handler login = new Handler()
+    public static final Handler login = new Handler()
     {
         @Override
         public void handle(@NotNull Context context) throws Exception
@@ -23,7 +23,7 @@ public final class LoginController
 
             String username = Inspector.getString(body, "username");
             String password = Inspector.getString(body, "password");
-            // TODO: validation
+            // TODO: add validation
 
             Optional<String> result = LoginService.login(username, password);
             if (result.isEmpty())
