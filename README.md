@@ -1,8 +1,5 @@
-# Notice
-This project is currently under construction
-
 # Spear
-Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs.nginx.com/), and [Docker](https://docs.docker.com/)
+Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs.nginx.com/), [Docker](https://docs.docker.com/), [HSQLDB](https://hsqldb.org/) and [JWT](https://jwt.io/) authentication
 
 # Development Setup
 This project was developed using these tools and technologies
