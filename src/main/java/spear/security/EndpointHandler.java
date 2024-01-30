@@ -8,7 +8,6 @@ import io.javalin.http.Context;
 import io.javalin.http.ForbiddenResponse;
 import io.javalin.http.Handler;
 import io.javalin.http.UnauthorizedResponse;
-import io.javalin.security.AccessManager;
 import io.javalin.security.RouteRole;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -17,9 +16,9 @@ import spear.App;
 
 import java.util.Set;
 
-public final class EndpointAccessManager implements AccessManager
+public final class EndpointHandler implements Handler
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EndpointAccessManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EndpointHandler.class);
 
     private static final EndpointRole GUEST = EndpointRole.of("GUEST");
     private static final EndpointRole LOGGED_IN = EndpointRole.of("LOGGED_IN");
@@ -28,26 +27,23 @@ public final class EndpointAccessManager implements AccessManager
     private static final String AUTH_TYPE = "Bearer";
     private static final int TOKEN_INDEX = AUTH_TYPE.length() + 1;
 
-    public EndpointAccessManager()
+    public EndpointHandler()
     { /* Default */ }
 
     @Override
-    public void manage(@NotNull Handler handler, @NotNull Context context, @NotNull Set<? extends RouteRole> roles) throws Exception
+    public void handle(@NotNull Context context) throws Exception
     {
+        Set<RouteRole> roles = context.routeRoles();
+
         if (roles.contains(GUEST))
         {
-            handler.handle(context);
             return;
         }
 
         if (roles.contains(LOGGED_IN))
         {
             boolean valid = checkToken(context);
-            if (valid)
-            {
-                handler.handle(context);
-            }
-            else
+            if (!valid)
             {
                 throw new ForbiddenResponse();
             }
@@ -80,7 +76,7 @@ public final class EndpointAccessManager implements AccessManager
             }
             catch (JWTVerificationException e)
             {
-                LOGGER.debug("Invalid Token", e);
+                LOGGER.debug("Invalid Token: {}", e.getMessage());
             }
         }
 

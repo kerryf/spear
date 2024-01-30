@@ -4,7 +4,7 @@ import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spear.controllers.LoginController;
-import spear.security.EndpointAccessManager;
+import spear.security.EndpointHandler;
 import spear.security.EndpointRole;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public final class Spear
         try
         {
             Javalin app = Javalin.create(config -> {
-                config.accessManager(new EndpointAccessManager());
+                config.useVirtualThreads = true;
             });
 
             Runtime.getRuntime().addShutdownHook(Thread.ofVirtual().unstarted(app::stop));
@@ -40,6 +40,8 @@ public final class Spear
 
             Lifecycle.start();
             Bootstrap.evaluate();
+
+            app.beforeMatched(new EndpointHandler());
 
             String greeting = App.getMessage("spear.greeting");
             app.get("/", context -> context.json(Map.of("message", greeting)), EndpointRole.of("GUEST"));
