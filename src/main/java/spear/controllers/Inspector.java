@@ -75,4 +75,25 @@ public final class Inspector
 
         return null;
     }
+
+    public static boolean checkMatches(String value, String regex, boolean required)
+    {
+        if (value != null)
+        {
+            return value.matches(regex);
+        }
+
+        return !required;
+    }
+
+    public static boolean checkLength(String value, int min, int max, boolean required)
+    {
+        if (value != null)
+        {
+            int length = value.length();
+            return length >= min && length <= max;
+        }
+
+        return !required;
+    }
 }
