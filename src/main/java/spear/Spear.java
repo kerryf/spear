@@ -1,12 +1,16 @@
 package spear;
 
 import io.javalin.Javalin;
+import io.javalin.http.BadRequestResponse;
+import io.javalin.http.InternalServerErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spear.controllers.InspectorException;
 import spear.controllers.LoginController;
 import spear.security.EndpointHandler;
 import spear.security.EndpointRole;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -50,6 +54,16 @@ public final class Spear
 
             String security = App.getMessage("spear.security");
             app.get("/spear/secure", context -> context.json(Map.of("message", security)), EndpointRole.of("LOGGED_IN"));
+
+            app.exception(InspectorException.class, (e, context) -> {
+                LOGGER.debug("Validation Error", e);
+                throw new BadRequestResponse(e.getMessage());
+            });
+
+            app.exception(SQLException.class, (e, context) -> {
+                LOGGER.error("Database Error", e);
+                throw new InternalServerErrorResponse(e.getMessage());
+            });
 
             String host = App.envStr("API_HOST");
             int port = App.envInt("API_PORT");
