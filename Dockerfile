@@ -9,6 +9,7 @@ RUN mkdir "data"
 
 # Copy project files to the working directory
 COPY conf conf
+COPY scripts scripts
 COPY target/dependency-jars dependency-jars
 COPY target/spear.jar spear.jar
 
