@@ -1,4 +1,4 @@
-create table USERS
+create table if not exists USERS
 (
     ID         INTEGER identity
         constraint USERS_PK
