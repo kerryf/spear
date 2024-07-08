@@ -3,9 +3,9 @@ Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs
 
 # Development Setup
 This project was developed using these tools and technologies
-- Fedora 39
+- Fedora 40
 - [IntelliJ Idea](https://www.jetbrains.com/idea/) 2023.3.2
-- JDK 21.0.1 (Azul Zulu)
+- JDK 21.0.3 (Azul Zulu)
 - [Maven](https://maven.apache.org/) 3.9.5
 - Docker 24.0.7
 
