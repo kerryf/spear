@@ -8,6 +8,10 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - ./conf:/opt/spear/conf
+      - ./logs:/opt/spear/logs
+      - ./data:/opt/spear/data
   nginx:
     image: nginx:latest
     container_name: nginx_spear
