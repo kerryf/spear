@@ -42,7 +42,7 @@ final class Bootstrap
         boolean createTables = App.cfgBool("table.create");
         if (createTables)
         {
-            String sql = readScript("create_users_table.sql");
+            String sql = readScript("create_tables.sql");
 
             try (Connection connection = App.getConnection();
                  Statement statement = connection.createStatement())
