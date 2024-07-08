@@ -1,14 +1,14 @@
-FROM azul/zulu-openjdk:21.0.1
+FROM azul/zulu-openjdk:21.0.3
 
 # Create a working directory for our application
 WORKDIR /opt/spear
 
-# Create the logs and data directories
+# Create project directories
+RUN mkdir "conf"
 RUN mkdir "logs"
 RUN mkdir "data"
 
 # Copy project files to the working directory
-COPY conf conf
 COPY scripts scripts
 COPY target/dependency-jars dependency-jars
 COPY target/spear.jar spear.jar
