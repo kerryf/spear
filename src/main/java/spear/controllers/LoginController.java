@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public final class LoginController
 {
-    private static final String USERNAME_REGEX = "[a-zA-Z0-9_-]{4,24}";
-    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$";
+    private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 64;
 
     private LoginController()
@@ -27,23 +27,23 @@ public final class LoginController
             JsonNode body = Inspector.getBody(context, "username", "password");
 
             String username = Inspector.getString(body, "username");
-            if (!Inspector.checkMatches(username, USERNAME_REGEX, true))
+            if (!Inspector.checkMatches(username, EMAIL_REGEX, true))
             {
-                String message = App.getMessage("credential.invalid", "username", "format");
+                String message = App.getMessage("email.format");
                 throw new InspectorException(message);
             }
 
             String password = Inspector.getString(body, "password");
             if (!Inspector.checkLength(password, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH, true))
             {
-                String message = App.getMessage("credential.invalid", "password", "length");
+                String message = App.getMessage("password.length", MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
                 throw new InspectorException(message);
             }
 
             Optional<String> result = LoginService.login(username, password);
             if (result.isEmpty())
             {
-                throw new UnauthorizedResponse();
+                throw new UnauthorizedResponse(App.getMessage("login.failed"));
             }
 
             context.json(result.get());
