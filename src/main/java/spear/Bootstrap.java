@@ -2,6 +2,8 @@ package spear;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spear.models.Role;
+import spear.services.RoleService;
 import spear.services.UserService;
 
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 /**
  * Contains functionality to perform configurable tasks on application start.
@@ -25,24 +28,24 @@ final class Bootstrap
     /**
      * Perform optional tasks on application start.
      * <ul>
-     *     <li>Create database table</li>
-     *     <li>Create an API user</li>
+     *     <li>Drop the database</li>
+     *     <li>Create the database, tables, and default user</li>
      * </ul>
      *
      * @throws Exception if an error occurs performing a task
      */
     static void evaluate() throws Exception
     {
-        createTable();
-        createUser();
+        dropTables();
+        createTables();
     }
 
-    private static void createTable() throws IOException, SQLException
+    private static void dropTables() throws IOException, SQLException
     {
-        boolean createTables = App.cfgBool("table.create");
-        if (createTables)
+        boolean drop = App.cfgBool("database.drop");
+        if (drop)
         {
-            String sql = readScript("create_tables.sql");
+            String sql = readScript("drop_tables.sql");
 
             try (Connection connection = App.getConnection();
                  Statement statement = connection.createStatement())
@@ -52,23 +55,48 @@ final class Bootstrap
         }
     }
 
-    private static String readScript(String file) throws IOException
+    private static void createTables() throws IOException, SQLException
     {
-        Path path = Paths.get("scripts", file);
-        return Files.readString(path);
+        boolean create = App.cfgBool("database.create");
+        if (create)
+        {
+            String sql = readScript("create_tables.sql");
+
+            try (Connection connection = App.getConnection();
+                 Statement statement = connection.createStatement())
+            {
+                statement.execute(sql);
+            }
+
+            addRoles();
+            createUser();
+        }
+    }
+
+    private static void addRoles() throws IOException, SQLException
+    {
+        String sql = readScript("add_roles.sql");
+
+        try (Connection connection = App.getConnection();
+             Statement statement = connection.createStatement())
+        {
+            statement.execute(sql);
+        }
     }
 
     private static void createUser() throws SQLException
     {
-        boolean createUser = App.cfgBool("user.create");
-        if (createUser)
-        {
-            String username = App.cfgStr("user.username");
-            String password = App.cfgStr("user.password");
-            String encoded = App.getEncoder().encode(password);
+        String username = App.cfgStr("spear.username");
+        String password = App.cfgStr("spear.password");
+        String encoded = App.getEncoder().encode(password);
 
-            UserService.createUser(username, encoded);
-            LOGGER.debug("Created API user {}", username);
-        }
+        int userId = UserService.createUserWithRole(username, encoded, "SPEAR_MASTER");
+        LOGGER.debug("Created master user {} with ID {}", username, userId);
+    }
+
+    private static String readScript(String file) throws IOException
+    {
+        Path path = Paths.get("scripts", file);
+        return Files.readString(path);
     }
 }
