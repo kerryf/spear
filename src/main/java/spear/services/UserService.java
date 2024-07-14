@@ -1,6 +1,7 @@
 package spear.services;
 
 import spear.App;
+import spear.models.Role;
 import spear.models.User;
 
 import java.sql.Connection;
@@ -76,7 +77,7 @@ public final class UserService
         return Optional.empty();
     }
 
-    public static void createUser(String username, String password) throws SQLException
+    public static int createUser(String username, String password) throws SQLException
     {
         Instant now = Instant.now();
 
@@ -91,8 +92,31 @@ public final class UserService
             int count = statement.executeUpdate();
             if (count != 1)
             {
-                throw new SQLException(App.getMessage("create.noRow", username));
+                throw new SQLException(App.getMessage("sql.noRow", "users"));
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys())
+            {
+                if (generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+                else
+                {
+                    throw new SQLException(App.getMessage("sql.noKey", "users"));
+                }
             }
         }
+    }
+
+    public static int createUserWithRole(String username, String password, String roleName) throws SQLException
+    {
+        Optional<Role> optional = RoleService.findRole(roleName);
+        Role role = optional.orElseThrow(() -> new SQLException(App.getMessage("sql.notFound", "role", roleName)));
+
+        int userId = createUser(username, password);
+        RoleService.addUserRole(userId, role.id());
+
+        return userId;
     }
 }
