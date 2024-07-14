@@ -45,7 +45,6 @@ final class Lifecycle
     static void start() throws Exception
     {
         Instant start = Instant.now();
-
         LOGGER.info("Starting setup tasks...");
 
         Container container = Container.getInstance();
@@ -112,7 +111,7 @@ final class Lifecycle
     private static HikariDataSource loadDataSource(Properties config)
     {
         HikariConfig dbConfig = new HikariConfig();
-        dbConfig.setJdbcUrl(config.getProperty("database"));
+        dbConfig.setJdbcUrl(config.getProperty("database.url"));
         dbConfig.setUsername(App.envStr("DB_USERNAME"));
         dbConfig.setPassword(App.envStr("DB_PASSWORD"));
 
