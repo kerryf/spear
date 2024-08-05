@@ -3,11 +3,11 @@ Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs
 
 # Development Setup
 This project was developed using these tools and technologies
-- Fedora 40
-- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2023.3.2
-- JDK 21.0.3 (Azul Zulu)
-- [Maven](https://maven.apache.org/) 3.9.5
-- Docker 24.0.7
+- Linux Mint 22
+- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2024.1.4
+- JDK 21.0.4 (Azul Zulu)
+- [Maven](https://maven.apache.org/) 3.9.6
+- Docker 27.1.1
 
 # Build Command
 Build an executable Jar with manifest and create a directory containing all dependencies
