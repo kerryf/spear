@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import spear.App;
 import spear.services.LoginService;
 
+import java.util.Map;
 import java.util.Optional;
 
 public final class LoginController
@@ -46,7 +47,7 @@ public final class LoginController
                 throw new UnauthorizedResponse(App.getMessage("login.failed"));
             }
 
-            context.json(result.get());
+            context.json(Map.of("token", result.get()));
         }
     };
 }
