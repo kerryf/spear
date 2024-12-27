@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   javalin:
     container_name: javalin_spear
