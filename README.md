@@ -3,10 +3,10 @@ Reference API project using [Javalin](https://javalin.io/), [NGINX](https://docs
 
 # Development Setup
 This project was developed using these tools and technologies
-- Linux Mint 22
-- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2024.1.4
-- JDK 21.0.4 (Azul Zulu)
-- [Maven](https://maven.apache.org/) 3.9.6
+- Ubuntu 24.04.1 LTS
+- [IntelliJ Idea](https://www.jetbrains.com/idea/) 2024.3.1.1
+- JDK 21.0.5 (Azul Zulu)
+- [Maven](https://maven.apache.org/) 3.9.9
 - Docker 27.1.1
 
 # Build Command
