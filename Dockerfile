@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk:21.0.3
+FROM azul/zulu-openjdk:21.0.5
 
 # Create a working directory for our application
 WORKDIR /opt/spear
