@@ -1,5 +1,8 @@
 .idea
+.gradle
 data
 logs
-target
+out
+build
+!gradle/wrapper/gradle-wrapper.jar
 .env
