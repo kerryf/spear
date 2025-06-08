@@ -1,19 +1,16 @@
-package spear;
-
-import java.util.HashMap;
-import java.util.Map;
+package spear
 
 /**
  * A place to store objects that live for the duration of the application.
  */
-public final class Container
+final class Container
 {
-    private static final Container CONTAINER = new Container();
-    private final Map<String, Object> storage;
+    private static final Container CONTAINER = new Container()
+    private final Map<String, Object> storage
 
     private Container()
     {
-        storage = new HashMap<>();
+        storage = [:]
     }
 
     /**
@@ -21,9 +18,9 @@ public final class Container
      *
      * @return the {@code Container} instance
      */
-    public static Container getInstance()
+    static Container getInstance()
     {
-        return CONTAINER;
+        return CONTAINER
     }
 
     /**
@@ -32,9 +29,9 @@ public final class Container
      * @param key key for the associated value to return
      * @return the value mapped to key or {@code null}
      */
-    public Object get(String key)
+    Object get(String key)
     {
-        return storage.get(key);
+        return storage[key]
     }
 
     /**
@@ -43,9 +40,9 @@ public final class Container
      * @param key key to associate with value
      * @param value value to store in the {@code Container}
      */
-    public void put(String key, Object value)
+    void put(String key, Object value)
     {
-        storage.put(key, value);
+        storage[key] = value
     }
 
     /**
@@ -54,8 +51,8 @@ public final class Container
      * @param key the key whose presence to test for
      * @return {@code true} if an object is associated with the given key
      */
-    public boolean has(String key)
+    boolean has(String key)
     {
-        return storage.containsKey(key);
+        return storage.containsKey(key)
     }
 }
