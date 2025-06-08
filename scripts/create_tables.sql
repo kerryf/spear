@@ -1,38 +1,37 @@
-create table if not exists USERS
+create table if not exists main.users
 (
-    ID         INTEGER identity
-        constraint USERS_PK
+    id         integer not null
+        constraint users_pk
             primary key,
-    USERNAME   VARCHAR(192)  not null
-        constraint USERS_UK
-            unique,
-    PASSWORD   VARCHAR(512)  not null,
-    ENABLED    BOOLEAN       not null,
-    CREATED_AT TIMESTAMP     not null,
-    UPDATED_AT TIMESTAMP     not null
+    username   text    not null,
+    password   text    not null,
+    first_name text    not null,
+    last_name  text,
+    enabled    integer not null,
+    created_at text    not null,
+    updated_at text    not null
 );
 
-create table if not exists ROLES
+create table if not exists main.roles
 (
-    ID          INTEGER identity
-        constraint ROLES_PK
+    id         integer not null
+        constraint roles_pk
             primary key,
-    NAME        VARCHAR(16) not null
-        constraint ROLES_UK
+    name       text    not null
+        constraint roles_uk
             unique,
-    DESCRIPTION VARCHAR(64),
-    CREATED_AT  TIMESTAMP   not null,
-    UPDATED_AT  TIMESTAMP   not null
+    created_at text    not null,
+    updated_at text    not null
 );
 
-create table if not exists USER_ROLES
+create table if not exists main.user_role
 (
-    USER_ID INTEGER not null
-        constraint USER_ROLES_USERS_ID_FK
-            references USERS,
-    ROLE_ID INTEGER not null
-        constraint USER_ROLES_ROLES_ID_FK
-            references ROLES,
-    constraint USER_ROLES_PK
-        primary key (USER_ID, ROLE_ID)
+    user_id integer not null
+        constraint user_role_users_id_fk
+            references main.users,
+    role_id integer not null
+        constraint user_role_roles_id_fk
+            references main.roles,
+    constraint user_role_pk
+        primary key (user_id, role_id)
 );

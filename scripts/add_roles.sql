@@ -1,5 +1,5 @@
-INSERT INTO ROLES (NAME, DESCRIPTION, CREATED_AT, UPDATED_AT)
-VALUES ('SPEAR_MASTER', 'Unrestricted access', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+insert into roles (name, created_at, updated_at)
+values ('user_admin', current_timestamp, current_timestamp);
 
-INSERT INTO ROLES (NAME, DESCRIPTION, CREATED_AT, UPDATED_AT)
-VALUES ('SPEAR_CONFIG', 'Spear configuration access', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+insert into roles (name, created_at, updated_at)
+values ('system_admin', current_timestamp, current_timestamp);
