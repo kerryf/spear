@@ -10,8 +10,8 @@ RUN mkdir "data"
 
 # Copy project files to the working directory
 COPY scripts scripts
-COPY target/dependency-jars dependency-jars
-COPY target/spear.jar spear.jar
+COPY build/dependency-jars dependency-jars
+COPY build/libs/spear.jar spear.jar
 
 # Have the container listen on port 8080
 EXPOSE 8080

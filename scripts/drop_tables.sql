@@ -1,3 +1,3 @@
-drop table if exists USER_ROLES;
-drop table if exists ROLES;
-drop table if exists USERS;
+drop table if exists user_role;
+drop table if exists roles;
+drop table if exists users;
