@@ -1,4 +1,4 @@
-create table if not exists main.users
+create table if not exists users
 (
     id         integer not null
         constraint users_pk
@@ -12,7 +12,7 @@ create table if not exists main.users
     updated_at text    not null
 );
 
-create table if not exists main.roles
+create table if not exists roles
 (
     id         integer not null
         constraint roles_pk
@@ -24,14 +24,14 @@ create table if not exists main.roles
     updated_at text    not null
 );
 
-create table if not exists main.user_role
+create table if not exists user_role
 (
     user_id integer not null
         constraint user_role_users_id_fk
-            references main.users,
+            references users,
     role_id integer not null
         constraint user_role_roles_id_fk
-            references main.roles,
+            references roles,
     constraint user_role_pk
         primary key (user_id, role_id)
 );
