@@ -23,11 +23,3 @@ spearUser {
     lastName = 'Baggins'
     roleName = 'system_admin'
 }
-
-/*
-Ensure the following environment variables are set:
-API_HOST
-API_PORT
-
-Use host 127.0.0.1 running without Docker and 0.0.0.0 with Docker
-*/
