@@ -1,9 +1,8 @@
 services:
   javalin:
-    container_name: javalin_spear
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8081"
     env_file:
       - .env
     volumes:
@@ -11,11 +10,10 @@ services:
       - ./logs:/opt/spear/logs
       - ./data:/opt/spear/data
   nginx:
-    image: nginx:latest
-    container_name: nginx_spear
+    image: docker.io/nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:8080"
+      - "8443:8443"
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./ssl:/etc/nginx/ssl

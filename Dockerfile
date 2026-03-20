@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk:21.0.5
+FROM docker.io/azul/zulu-openjdk:21-latest
 
 # Create a working directory for our application
 WORKDIR /opt/spear
@@ -13,8 +13,8 @@ COPY scripts scripts
 COPY build/dependency-jars dependency-jars
 COPY build/libs/spear.jar spear.jar
 
-# Have the container listen on port 8080
-EXPOSE 8080
+# Have the container listen on port 8081
+EXPOSE 8081
 
 # Start the application
 ENTRYPOINT ["java", "-Djava.util.logging.config.file=conf/Logging.properties", "-jar", "spear.jar"]
