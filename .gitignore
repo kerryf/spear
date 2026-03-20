@@ -1,7 +1,7 @@
 .idea
 .gradle
-data
-logs
+data/spear.sqlite
+logs/*.log
 out
 build
 !gradle/wrapper/gradle-wrapper.jar
