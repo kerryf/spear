@@ -21,37 +21,35 @@ final class Spear
     {
         try
         {
-            Javalin app = Javalin.create()
+            Javalin app = Javalin.create(config -> {
+                // Security
+                config.routes.beforeMatched(new EndpointHandler())
+
+                // Routes
+                config.routes.get('/', context -> context.json(Map.of('message', 'Hello World!')), EndpointRole.of('guest'))
+                config.routes.post('/spear/login', LoginController.login, EndpointRole.of('guest'))
+
+                // Exceptions
+                config.routes.exception(InspectorException.class, (e, context) -> {
+                    log.debug('Validation Error', e)
+                    throw new BadRequestResponse(e.getMessage())
+                })
+
+                config.routes.exception(SQLException.class, (e, context) -> {
+                    log.error('Database Error', e)
+                    throw new InternalServerErrorResponse(e.getMessage())
+                })
+
+                // Lifecycle
+                config.events.serverStopped(listener -> { Lifecycle::stop() })
+            })
 
             Runtime.getRuntime().addShutdownHook(Thread.ofPlatform().unstarted(app::stop))
-
-            app.events(listener -> {
-                listener.serverStopped(Lifecycle::stop)
-            })
 
             Lifecycle.start()
             Bootstrap.evaluate()
 
-            app.beforeMatched(new EndpointHandler())
-
-            String greeting = App.getMessage('spear.greeting')
-            app.get('/', context -> context.json(Map.of('message', greeting)), EndpointRole.of('guest'))
-
-            app.post('/spear/login', LoginController.login, EndpointRole.of('guest'))
-
-            app.exception(InspectorException.class, (e, context) -> {
-                log.debug('Validation Error', e)
-                throw new BadRequestResponse(e.getMessage())
-            })
-
-            app.exception(SQLException.class, (e, context) -> {
-                log.error('Database Error', e)
-                throw new InternalServerErrorResponse(e.getMessage())
-            })
-
-            String host = App.envStr('API_HOST')
-            int port = App.envInt('API_PORT')
-            app.start(host, port)
+            app.start('0.0.0.0', 8081)
         }
         catch (Exception e)
         {
