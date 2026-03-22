@@ -28,7 +28,7 @@ final class LoginService
             return false
         }
 
-        boolean valid = App.getEncoder().validate(user.password(), password)
+        boolean valid = App.getEncoder().verify(user.password(), password)
         if (!valid)
         {
             log.debug('Invalid password for {}', username)
