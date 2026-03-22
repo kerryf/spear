@@ -41,7 +41,7 @@ final class Spear
                 })
 
                 // Lifecycle
-                config.events.serverStopped(listener -> { Lifecycle::stop() })
+                config.events.serverStopped(listener -> { Lifecycle.stop() })
             })
 
             Runtime.getRuntime().addShutdownHook(Thread.ofPlatform().unstarted(app::stop))
