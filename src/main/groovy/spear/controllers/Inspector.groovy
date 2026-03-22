@@ -8,6 +8,8 @@ import spear.App
 
 final class Inspector
 {
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+
     private Inspector()
     { /* Hidden */ }
 
@@ -21,7 +23,7 @@ final class Inspector
 
         try
         {
-            return new ObjectMapper().readTree(body)
+            return MAPPER.readTree(body)
         }
         catch (JsonProcessingException e)
         {
