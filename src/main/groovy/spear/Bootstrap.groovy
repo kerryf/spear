@@ -1,5 +1,6 @@
 package spear
 
+import groovy.sql.Sql
 import groovy.util.logging.Slf4j
 import spear.models.Role
 import spear.services.RoleService
@@ -82,7 +83,7 @@ final class Bootstrap
         if (user)
         {
             String password = App.config.spearUser.password
-            String encoded = App.encoder.encode(password)
+            String encoded = App.encoder.hash(password)
 
             String username = App.config.spearUser.username
             String firstName = App.config.spearUser.firstName
@@ -102,7 +103,11 @@ final class Bootstrap
     private static void runScript(String file) throws IOException, SQLException
     {
         String script = readScript(file)
-        App.sql.execute(script)
+
+        try (Sql sql = App.getSql())
+        {
+            sql.execute(script)
+        }
     }
 
     private static String readScript(String file) throws IOException

@@ -1,5 +1,6 @@
 package spear.services
 
+import groovy.sql.Sql
 import spear.App
 import spear.models.Role
 
@@ -24,30 +25,39 @@ final class RoleService
 
     static Optional<Role> getRole(int id) throws SQLException
     {
-        def row = App.sql.firstRow(GET_ROLE, [id])
-        if (row)
+        try (Sql sql = App.getSql())
         {
-            Role role = Role.from(row)
-            return Optional.of(role)
-        }
+            def row = sql.firstRow(GET_ROLE, [id])
+            if (row)
+            {
+                Role role = Role.from(row)
+                return Optional.of(role)
+            }
 
-        return Optional.empty()
+            return Optional.empty()
+        }
     }
 
     static Optional<Role> findRole(String name) throws SQLException
     {
-        def row = App.sql.firstRow(FIND_ROLE, [name])
-        if (row)
+        try (Sql sql = App.getSql())
         {
-            Role role = Role.from(row)
-            return Optional.of(role)
-        }
+            def row = sql.firstRow(FIND_ROLE, [name])
+            if (row)
+            {
+                Role role = Role.from(row)
+                return Optional.of(role)
+            }
 
-        return Optional.empty()
+            return Optional.empty()
+        }
     }
 
     static void addUserRole(int userId, int roleId) throws SQLException
     {
-        App.sql.execute(ADD_USER_ROLE, [userId, roleId])
+        try (Sql sql = App.getSql())
+        {
+            sql.execute(ADD_USER_ROLE, [userId, roleId])
+        }
     }
 }

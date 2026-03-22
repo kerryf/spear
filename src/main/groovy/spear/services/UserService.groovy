@@ -1,5 +1,6 @@
 package spear.services
 
+import groovy.sql.Sql
 import spear.App
 import spear.models.User
 
@@ -27,33 +28,42 @@ final class UserService
 
     static Optional<User> getUser(int id) throws SQLException
     {
-        def row = App.sql.firstRow(GET_USER, [id])
-        if (row)
+        try (Sql sql = App.getSql())
         {
-            User user = User.from(row)
-            return Optional.of(user)
-        }
+            def row = sql.firstRow(GET_USER, [id])
+            if (row)
+            {
+                User user = User.from(row)
+                return Optional.of(user)
+            }
 
-        return Optional.empty()
+            return Optional.empty()
+        }
     }
 
     static Optional<User> findUser(String username) throws SQLException
     {
-        def row = App.sql.firstRow(FIND_USER, [username])
-        if (row)
+        try (Sql sql = App.getSql())
         {
-            User user = User.from(row)
-            return Optional.of(user)
-        }
+            def row = sql.firstRow(FIND_USER, [username])
+            if (row)
+            {
+                User user = User.from(row)
+                return Optional.of(user)
+            }
 
-        return Optional.empty()
+            return Optional.empty()
+        }
     }
 
     static int createUser(String username, String password, String firstName, String lastName) throws SQLException
     {
-        def result = App.sql.executeInsert(CREATE_USER, [username, password, firstName, lastName])
-        def keys = result[0]
+        try (Sql sql = App.getSql())
+        {
+            def result = sql.executeInsert(CREATE_USER, [username, password, firstName, lastName])
+            def keys = result[0]
 
-        return keys[0] as int
+            return keys[0] as int
+        }
     }
 }
