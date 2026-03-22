@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull
 @Slf4j
 final class EndpointHandler implements Handler
 {
-    private static final EndpointRole GUEST = EndpointRole.of('GUEST')
+    private static final EndpointRole GUEST = EndpointRole.of('guest')
 
     private static final String AUTH_HEADER = 'Authorization'
     private static final String AUTH_TYPE = 'Bearer'
