@@ -1,6 +1,6 @@
-package spear.security;
+package spear.security
 
-import io.javalin.security.RouteRole;
+import io.javalin.security.RouteRole
 
 final class EndpointRole implements RouteRole
 {
