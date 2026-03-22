@@ -6,8 +6,6 @@ plugins {
 
 group = 'ca.kerryf'
 version = '1.0'
-sourceCompatibility = '21'
-targetCompatibility = '21'
 
 repositories {
     mavenCentral()
@@ -15,7 +13,7 @@ repositories {
 
 dependencies {
     implementation 'io.javalin:javalin:7.1.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
     implementation 'org.slf4j:slf4j-jdk14:2.0.17'
     implementation 'org.xerial:sqlite-jdbc:3.51.3.0'
     implementation 'com.zaxxer:HikariCP:7.0.2'
@@ -30,21 +28,6 @@ application {
     mainClass = 'spear.Spear'
 }
 
-// Configure Groovy source directories
-sourceSets {
-    main {
-        groovy {
-            srcDirs = ['src/main/groovy']
-        }
-    }
-    test {
-        groovy {
-            srcDirs = ['src/test/groovy']
-        }
-    }
-}
-
-// Configure test task to use JUnit Platform
 test {
     useJUnitPlatform()
 }
@@ -59,10 +42,10 @@ jar {
     }
 }
 
-// Copy dependencies to dependency-jars directory
-task copyDependencies(type: Copy) {
+tasks.register('copyDependencies', Copy) {
+    description = 'Copy dependencies to the dependency-jars directory.'
     from configurations.runtimeClasspath
-    into "${buildDir}/dependency-jars"
+    into layout.buildDirectory.dir('dependency-jars')
 }
 
 build.dependsOn copyDependencies
