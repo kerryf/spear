@@ -1,5 +1,6 @@
 package spear
 
+import com.zaxxer.hikari.HikariDataSource
 import groovy.sql.Sql
 import spear.security.Pbkdf2PasswordEncoder
 
@@ -95,12 +96,13 @@ final class App
     }
 
     /**
-     * Returns the database facade from the {@code Container}.
+     * Returns the database facade backed by the shared {@code HikariDataSource}.
      *
-     * @return the {@code Sql} object providing database access
+     * @return a new {@code Sql} instance providing database access
      */
     static Sql getSql()
     {
-        return Container.instance.get('spear.database') as Sql
+        HikariDataSource dataSource = Container.instance.get('spear.datasource') as HikariDataSource
+        return new Sql(dataSource)
     }
 }

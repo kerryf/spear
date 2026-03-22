@@ -2,7 +2,6 @@ package spear
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import groovy.sql.Sql
 import groovy.util.logging.Slf4j
 import spear.security.Pbkdf2PasswordEncoder
 
@@ -57,8 +56,8 @@ final class Lifecycle
         container.put('spear.encoder', encoder)
         log.info('Created the password encoder')
 
-        Sql sql = loadDatabase(config)
-        container.put('spear.database', sql)
+        HikariDataSource dataSource = loadDataSource(config)
+        container.put('spear.datasource', dataSource)
 
         Instant end = Instant.now()
         Duration duration = Duration.between(start, end)
@@ -89,16 +88,14 @@ final class Lifecycle
         TimeZone.setDefault(zone)
     }
 
-    private static Sql loadDatabase(ConfigObject config)
+    private static HikariDataSource loadDataSource(ConfigObject config)
     {
         String url = config.database.url
 
         HikariConfig dbConfig = new HikariConfig()
         dbConfig.setJdbcUrl(url)
 
-        HikariDataSource dbSource = new HikariDataSource(dbConfig)
-
-        return new Sql(dbSource)
+        return new HikariDataSource(dbConfig)
     }
 
     /**
@@ -108,14 +105,9 @@ final class Lifecycle
     {
         Container container = Container.getInstance()
 
-        def database = container.get('spear.database')
-        if (database)
+        def pool = container.get('spear.datasource')
+        if (pool instanceof HikariDataSource dataSource)
         {
-            Sql sql = database as Sql
-            sql.close()
-            System.out.println('Cached database resources closed')
-
-            HikariDataSource dataSource = sql.getDataSource() as HikariDataSource
             dataSource.close()
             System.out.println('Database connection pool closed')
         }
